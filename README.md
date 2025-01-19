@@ -29,3 +29,22 @@ npm run dev
 # Bugs
 1. The Mac version does not have this dist folder build into the executable.  
 
+[That Deno 2.1 allows embedding assets](https://deno.com/blog/v2.1#embed-assets-files-in-deno-compile) is likely to help fix this bug.  Trying it naively did not seem to work on Windows (it did make a larger exe and said it included it):
+
+```
+ deno compile --include ./dist/ -A .\server.ts
+Compile file:///C:/Users/mattg/Downloads/oak1-main/oak1-main/server.ts to server.exe
+
+Embedded Files
+
+server.exe
+├── database.ts (773B)
+├── deps.ts (334B)
+├── dist/* (654.2KB)
+├── routes/* (5.03KB)
+└── server.ts (2.4KB)
+
+Size: 662.71KB
+```
+
+
