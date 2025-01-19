@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { HttpClientModule } from '@angular/common/http';
 import { TodoService } from './todo.service';
 import { Todo } from './todo.interface';
 
@@ -19,6 +20,7 @@ import { Todo } from './todo.interface';
     CommonModule,
     FormsModule,
     MatCardModule,
+    HttpClientModule,
     MatInputModule,
     MatButtonModule,
     MatCheckboxModule,
@@ -52,7 +54,7 @@ import { Todo } from './todo.interface';
                 [(ngModel)]="todo.completed"
                 (change)="updateTodo(todo)">
                 <span [class.completed]="todo.completed">
-                  {{ todo.title }}
+                  {{ todo.item }}
                 </span>
               </mat-checkbox>
               <button mat-icon-button
@@ -82,9 +84,11 @@ export class TodoAppComponent implements OnInit {
   }
 
   loadTodos(): void {
+    console.log(`Loading todos`);
     this.todoService.getTodos().subscribe({
       next: (todos) => {
         this.todos = todos;
+        console.log(`Loaded ${todos.length} todos`);
       },
       error: (error) => {
         this.showError('Failed to load todos');
@@ -98,7 +102,7 @@ export class TodoAppComponent implements OnInit {
     }
 
     const newTodo: Todo = {
-      title: this.newTodoTitle,
+      item: this.newTodoTitle,
       completed: false
     };
 
