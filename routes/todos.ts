@@ -35,8 +35,10 @@ router.post("/api/todos", async (ctx) => {
     return;
   }
 
-  const stmt = db.prepare("INSERT INTO todos (item, notes, due_date) VALUES (?, ?, ?)");
-  stmt.run(item, notes, due_date);
+  const insertStmt = db.prepare(
+    "INSERT INTO todos (item, notes, due_date) VALUES (?, ?, ?)"
+  );
+  insertStmt.run(item, notes, due_date);
 
   const id = db.lastInsertRowId;
   const newTodo = db.prepare("SELECT * FROM todos WHERE id = ?").get(id);
@@ -51,19 +53,19 @@ router.put("/api/todos/:id", async (ctx) => {
   const body = await ctx.request.body().value;
   const { item, notes, due_date, completed } = body;
 
-  const todo = db.queryEntries("SELECT * FROM todos WHERE id = ?", [id])[0];
+  const todo = db.prepare("SELECT * FROM todos WHERE id = ?").get(id);
   if (!todo) {
     ctx.response.status = 404;
     ctx.response.body = { message: "Todo not found" };
     return;
   }
 
-  const stmt = db.prepare(
+  const updateStmt = db.prepare(
     `UPDATE todos 
      SET item = ?, notes = ?, due_date = ?, completed = ?
      WHERE id = ?`
   );
-  stmt.run(
+  updateStmt.run(
     item || todo.item,
     notes !== undefined ? notes : todo.notes,
     due_date || todo.due_date,
@@ -71,7 +73,7 @@ router.put("/api/todos/:id", async (ctx) => {
     id
   );
 
-  const updatedTodo = db.queryEntries("SELECT * FROM todos WHERE id = ?", [id])[0];
+  const updatedTodo = db.prepare("SELECT * FROM todos WHERE id = ?").get(id);
   ctx.response.body = updatedTodo;
 });
 
@@ -79,7 +81,7 @@ router.put("/api/todos/:id", async (ctx) => {
 router.delete("/api/todos/:id", (ctx) => {
   const id = ctx.params.id;
   
-  const todo = db.queryEntries("SELECT * FROM todos WHERE id = ?", [id])[0];
+  const todo = db.prepare("SELECT * FROM todos WHERE id = ?").get(id);
   if (!todo) {
     ctx.response.status = 404;
     ctx.response.body = { message: "Todo not found" };
