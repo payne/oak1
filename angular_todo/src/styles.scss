@@ -1,23 +1,9 @@
 // styles.scss (global styles)
 @use '@angular/material' as mat;
-@use '@angular/material/theming' as *;
 
 // Include material core styles
 @include mat.core();
 
-// Define your custom theme
-$primary-palette: define-palette($indigo-palette);
-$accent-palette: define-palette($pink-palette);
-
-$theme: define-light-theme((
-  color: (
-    primary: $primary-palette,
-    accent: $accent-palette
-  )
-));
-
-// Apply the theme
-@include angular-material-theme($theme);
 
 // Global styles
 html, body {
