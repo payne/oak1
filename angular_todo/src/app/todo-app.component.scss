@@ -1,0 +1,44 @@
+
+.todo-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  
+    mat-card {
+      mat-card-header {
+        margin-bottom: 1rem;
+      }
+  
+      .add-todo {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        margin-bottom: 2rem;
+  
+        mat-form-field {
+          flex: 1;
+        }
+      }
+  
+      .todo-list {
+        .todo-item {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0.5rem 0;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  
+          &:last-child {
+            border-bottom: none;
+          }
+  
+          .completed {
+            text-decoration: line-through;
+            color: rgba(0, 0, 0, 0.54);
+          }
+        }
+      }
+    }
+  }
+
+  
