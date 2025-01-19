@@ -38,7 +38,8 @@ router.post("/api/todos", async (ctx) => {
   const insertStmt = db.prepare(
     "INSERT INTO todos (item, notes, due_date) VALUES (?, ?, ?)"
   );
-  insertStmt.run(item, notes, due_date);
+  console.log(insertStmt);
+  insertStmt.run([item, notes??'', due_date??'']);
 
   const id = db.lastInsertRowId;
   const newTodo = db.prepare("SELECT * FROM todos WHERE id = ?").get(id);
@@ -65,13 +66,13 @@ router.put("/api/todos/:id", async (ctx) => {
      SET item = ?, notes = ?, due_date = ?, completed = ?
      WHERE id = ?`
   );
-  updateStmt.run(
+  updateStmt.run([
     item || todo.item,
     notes !== undefined ? notes : todo.notes,
     due_date || todo.due_date,
     completed !== undefined ? completed : todo.completed,
     id
-  );
+  ]);
 
   const updatedTodo = db.prepare("SELECT * FROM todos WHERE id = ?").get(id);
   ctx.response.body = updatedTodo;
@@ -88,10 +89,9 @@ router.delete("/api/todos/:id", (ctx) => {
     return;
   }
 
-  db.prepare("DELETE FROM todos WHERE id = ?").run(id);
+  db.prepare("DELETE FROM todos WHERE id = ?").run([id]);
   ctx.response.status = 204;
 });
 
 export default router;
-
 

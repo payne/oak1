@@ -16,4 +16,3 @@ db.prepare(`
 `).run();
 
 export { db };
-
