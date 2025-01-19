@@ -38,11 +38,7 @@ router.post("/api/todos", async (ctx) => {
   const stmt = db.prepare("INSERT INTO todos (item, notes, due_date) VALUES (?, ?, ?)");
   stmt.run(item, notes, due_date);
 
-  // this looks like a bug -- sus city!
-  console.log(stmt);
-  const id = stmt.lastInsertRowId;
-  console.log(id);
-  console.log('**********');
+  const id = db.lastInsertRowId;
   const newTodo = db.prepare("SELECT * FROM todos WHERE id = ?").get(id);
   
   ctx.response.status = 201;
