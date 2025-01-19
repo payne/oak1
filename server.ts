@@ -32,13 +32,13 @@ app.use(async (ctx) => {
   if (!ctx.request.url.pathname.startsWith("/api")) {
     try {
       await send(ctx, ctx.request.url.pathname, {
-        root: `${Deno.cwd()}/dist`,
+        root: `./dist`,
         index: "index.html",
       });
     } catch {
       // If file not found, serve index.html for client-side routing
       await send(ctx, "index.html", {
-        root: `${Deno.cwd()}/dist`,
+        root: `./dist`,
       });
     }
   }
