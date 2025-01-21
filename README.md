@@ -48,3 +48,4 @@ Size: 662.71KB
 ```
 
 
+deno compile --no-check --include ./file.zip -A u.ts 
