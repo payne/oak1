@@ -48,4 +48,14 @@ Size: 662.71KB
 ```
 
 
-deno compile --no-check --include ./file.zip -A u.ts 
+# Problem reading included files 
+
+Both u.ts and u2.ts do not work.  [compiling](https://docs.deno.com/runtime/reference/cli/compile/) like this:
+
+```
+deno compile --no-check --include file.zip -A u.ts 
+```
+
+I wonder if could read file.zip via http/https instead of being included?
+
+

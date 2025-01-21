@@ -2,17 +2,8 @@ import { ZipReader, BlobReader, BlobWriter } from "https://deno.land/x/zipjs@v2.
 
 async function extractZip(zipPath: string, outputDir: string) {
   try {
-    // Try current directory first, then try relative to executable
-    let zipData: Uint8Array;
-    try {
-      zipData = await Deno.readFile(zipPath);
-    } catch (error) {
-      // If file not found in current directory, try executable directory
-      const execPath = Deno.execPath();
-      const execDir = execPath.substring(0, execPath.lastIndexOf('/'));
-      zipData = await Deno.readFile(`${execDir}/${zipPath}`);
-    }
-    
+    // Read the bundled zip file
+    const zipData = Deno.readFileSync(new URL(zipPath, import.meta.url));
     const zipBlob = new Blob([zipData]);
     const reader = new BlobReader(zipBlob);
     const zipReader = new ZipReader(reader);
@@ -52,8 +43,8 @@ async function extractZip(zipPath: string, outputDir: string) {
   }
 }
 
-// Usage
-const zipPath = "file.zip";
+// Usage - note that we need to use the full path that matches how Deno bundles included files
+const zipPath = "file:///$deno$/file.zip";
 const outputDir = "/tmp/zout";
 await extractZip(zipPath, outputDir);
 
