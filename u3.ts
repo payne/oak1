@@ -1,6 +1,7 @@
-import { ensureDir } from "https://deno.land/std@0.220.1/fs/ensure_dir.ts";
-import { join } from "https://deno.land/std@0.220.1/path/join.ts";
-import { extract } from "https://deno.land/std@0.220.1/archive/extract.ts";
+import { ensureDir } from "https://deno.land/std@0.208.0/fs/ensure_dir.ts";
+import { join } from "https://deno.land/std@0.208.0/path/join.ts";
+import * as path from "https://deno.land/std@0.208.0/path/mod.ts";
+import { decompress } from "https://deno.land/x/zip@v1.2.5/mod.ts";
 
 if (Deno.args.length !== 1) {
   console.error("Please provide a URL to the ZIP file");
@@ -29,7 +30,12 @@ try {
   
   // Extract the ZIP contents
   console.log("Extracting ZIP contents...");
-  await extract(tempFile, outputDir);
+  const files = await decompress(tempFile, outputDir);
+  
+  // Log extracted files
+  for (const file of files) {
+    console.log(`Extracted: ${file}`);
+  }
   
   // Clean up the temporary file
   await Deno.remove(tempFile);
