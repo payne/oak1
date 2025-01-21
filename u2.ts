@@ -1,19 +1,19 @@
 import { ZipReader, BlobReader, BlobWriter } from "https://deno.land/x/zipjs@v2.7.40/index.js";
-import { dirname, fromFileUrl, join } from "https://deno.land/std/path/mod.ts";
 
 async function extractZip(zipPath: string, outputDir: string) {
   try {
-    // Get the directory of the current executable
-    const execPath = dirname(fromFileUrl(import.meta.url));
+    // Try current directory first, then try relative to executable
+    let zipData: Uint8Array;
+    try {
+      zipData = await Deno.readFile(zipPath);
+    } catch (error) {
+      // If file not found in current directory, try executable directory
+      const execPath = Deno.execPath();
+      const execDir = execPath.substring(0, execPath.lastIndexOf('/'));
+      zipData = await Deno.readFile(`${execDir}/${zipPath}`);
+    }
     
-    // Resolve zip path relative to executable
-    const resolvedZipPath = join(execPath, zipPath);
-    
-    // Read the zip file as a blob
-    const zipData = await Deno.readFile(resolvedZipPath);
     const zipBlob = new Blob([zipData]);
-    
-    // Rest of your existing code remains the same...
     const reader = new BlobReader(zipBlob);
     const zipReader = new ZipReader(reader);
     
