@@ -59,3 +59,10 @@ deno compile --no-check --include file.zip -A u.ts
 I wonder if could read file.zip via http/https instead of being included?
 
 
+
+# YAY -- this works -- problem kinda fixed
+
+`deno compile  --no-check -A u3.ts`
+
+`./u3 https://github.com/payne/oak1/raw/refs/heads/main/file.zip`
+
