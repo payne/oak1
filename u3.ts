@@ -1,32 +1,49 @@
-import { ensureDir } from "https://deno.land/std/fs/mod.ts";
-import { join } from "https://deno.land/std/path/mod.ts";
-import { unZipFromURL } from "https://deno.land/x/unzip@v0.3.0/mod.ts";
+import { ensureDir } from "https://deno.land/std@0.220.1/fs/ensure_dir.ts";
+import { join } from "https://deno.land/std@0.220.1/path/join.ts";
+import { extract } from "https://deno.land/std@0.220.1/archive/extract.ts";
 
 if (Deno.args.length !== 1) {
   console.error("Please provide a URL to the ZIP file");
-  console.error("Usage: deno run --allow-net --allow-write --allow-read unzip.ts <url>");
+  console.error("Usage: deno run --allow-net --allow-write --allow-read u3.ts <url>");
   Deno.exit(1);
 }
 
 const url = Deno.args[0];
 const outputDir = "/tmp/zout";
-
-// Create the output directory if it doesn't exist
-await ensureDir(outputDir);
+const tempFile = "/tmp/temp.zip";
 
 try {
-  // Download and extract the ZIP file
-  console.log(`Downloading and extracting ZIP from ${url}...`);
-  try {
-    await unZipFromURL(url, {
-      destinationDir: outputDir,
-    });
-    console.log("Extraction complete!");
+  // Create the output directory if it doesn't exist
+  await ensureDir(outputDir);
+
+  // Download the ZIP file
+  console.log(`Downloading ZIP from ${url}...`);
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Failed to download: ${response.status} ${response.statusText}`);
   }
+
+  // Save the ZIP file temporarily
+  const data = new Uint8Array(await response.arrayBuffer());
+  await Deno.writeFile(tempFile, data);
+  
+  // Extract the ZIP contents
+  console.log("Extracting ZIP contents...");
+  await extract(tempFile, outputDir);
+  
+  // Clean up the temporary file
+  await Deno.remove(tempFile);
   
   console.log(`\nExtraction complete! Files are in ${outputDir}`);
 
 } catch (error) {
   console.error("Error:", error.message);
+  // Clean up temp file if it exists
+  try {
+    await Deno.remove(tempFile);
+  } catch {
+    // Ignore cleanup errors
+  }
   Deno.exit(1);
 }
+
