@@ -35,7 +35,7 @@ async function extractZip(zipPath: string, outputDir: string) {
         
         // Write file
         const writer = new BlobWriter();
-        const blob = await entry.getData(writer);
+        const blob = await entry?.getData(writer);
         const arrayBuffer = await blob.arrayBuffer();
         await Deno.writeFile(filepath, new Uint8Array(arrayBuffer));
       }
