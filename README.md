@@ -66,3 +66,11 @@ I wonder if could read file.zip via http/https instead of being included?
 
 `./u3 https://github.com/payne/oak1/raw/refs/heads/main/file.zip`
 
+# YAY HURRAY!  Reading file within a compiled executable works great.
+
+Used https://deno.com/blog/v2.1 info to learn about `import.meta.dirname` trick.
+
+`deno compile --include ./hello.txt -A reading_demo.ts`
+
+
+
