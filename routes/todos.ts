@@ -6,7 +6,8 @@ const router = new Router();
 
 // GET /api/todos - List all todos
 router.get("/api/todos", (ctx) => {
-  const todos = db.prepare("SELECT * FROM todos ORDER BY created_date DESC").all();
+  const todos = db.prepare("SELECT * FROM todos ORDER BY created_date DESC")
+    .all();
   ctx.response.body = todos;
 });
 
@@ -14,13 +15,13 @@ router.get("/api/todos", (ctx) => {
 router.get("/api/todos/:id", (ctx) => {
   const id = ctx.params.id;
   const todo = db.prepare("SELECT * FROM todos WHERE id = ?").get(id);
-  
+
   if (!todo) {
     ctx.response.status = 404;
     ctx.response.body = { message: "Todo not found" };
     return;
   }
-  
+
   ctx.response.body = todo;
 });
 
@@ -36,14 +37,14 @@ router.post("/api/todos", async (ctx) => {
   }
 
   const insertStmt = db.prepare(
-    "INSERT INTO todos (item, notes, due_date) VALUES (?, ?, ?)"
+    "INSERT INTO todos (item, notes, due_date) VALUES (?, ?, ?)",
   );
   console.log(insertStmt);
-  insertStmt.run([item, notes??'', due_date??'']);
+  insertStmt.run([item, notes ?? "", due_date ?? ""]);
 
   const id = db.lastInsertRowId;
   const newTodo = db.prepare("SELECT * FROM todos WHERE id = ?").get(id);
-  
+
   ctx.response.status = 201;
   ctx.response.body = newTodo;
 });
@@ -64,14 +65,14 @@ router.put("/api/todos/:id", async (ctx) => {
   const updateStmt = db.prepare(
     `UPDATE todos 
      SET item = ?, notes = ?, due_date = ?, completed = ?
-     WHERE id = ?`
+     WHERE id = ?`,
   );
   updateStmt.run([
     item || todo.item,
     notes !== undefined ? notes : todo.notes,
     due_date || todo.due_date,
     completed !== undefined ? completed : todo.completed,
-    id
+    id,
   ]);
 
   const updatedTodo = db.prepare("SELECT * FROM todos WHERE id = ?").get(id);
@@ -81,7 +82,7 @@ router.put("/api/todos/:id", async (ctx) => {
 // DELETE /api/todos/:id - Delete a todo
 router.delete("/api/todos/:id", (ctx) => {
   const id = ctx.params.id;
-  
+
   const todo = db.prepare("SELECT * FROM todos WHERE id = ?").get(id);
   if (!todo) {
     ctx.response.status = 404;
@@ -94,4 +95,3 @@ router.delete("/api/todos/:id", (ctx) => {
 });
 
 export default router;
-

@@ -1,4 +1,8 @@
-import { ZipReader, BlobReader, BlobWriter } from "https://deno.land/x/zipjs@v2.7.40/index.js";
+import {
+  BlobReader,
+  BlobWriter,
+  ZipReader,
+} from "https://deno.land/x/zipjs@v2.7.40/index.js";
 
 async function extractZip(zipPath: string, outputDir: string) {
   try {
@@ -7,7 +11,7 @@ async function extractZip(zipPath: string, outputDir: string) {
     const zipBlob = new Blob([zipData]);
     const reader = new BlobReader(zipBlob);
     const zipReader = new ZipReader(reader);
-    
+
     try {
       await Deno.mkdir(outputDir, { recursive: true });
     } catch (error) {
@@ -17,25 +21,25 @@ async function extractZip(zipPath: string, outputDir: string) {
     }
 
     const entries = await zipReader.getEntries();
-    
+
     for (const entry of entries) {
       const filepath = `${outputDir}/${entry.filename}`;
-      
+
       if (entry.directory) {
         await Deno.mkdir(filepath, { recursive: true });
       } else {
-        const parentDir = filepath.substring(0, filepath.lastIndexOf('/'));
+        const parentDir = filepath.substring(0, filepath.lastIndexOf("/"));
         await Deno.mkdir(parentDir, { recursive: true });
-        
+
         const writer = new BlobWriter();
         const blob = await entry?.getData(writer);
         const arrayBuffer = await blob.arrayBuffer();
         await Deno.writeFile(filepath, new Uint8Array(arrayBuffer));
       }
     }
-    
+
     await zipReader.close();
-    
+
     console.log(`Successfully extracted to ${outputDir}`);
   } catch (error) {
     console.error("Error extracting zip:", error);
@@ -47,4 +51,3 @@ async function extractZip(zipPath: string, outputDir: string) {
 const zipPath = "file:///$deno$/file.zip";
 const outputDir = "/tmp/zout";
 await extractZip(zipPath, outputDir);
-

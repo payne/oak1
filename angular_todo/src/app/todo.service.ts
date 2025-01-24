@@ -1,18 +1,16 @@
-
-
 // todo.service.ts
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Todo } from './todo.interface';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { Observable } from "rxjs";
+import { Todo } from "./todo.interface";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class TodoService {
-  private apiUrl = '/api/todos';
+  private apiUrl = "/api/todos";
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getTodos(): Observable<Todo[]> {
     return this.http.get<Todo[]>(this.apiUrl);
@@ -30,5 +28,3 @@ export class TodoService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }
-
-

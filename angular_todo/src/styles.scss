@@ -1,9 +1,8 @@
 // styles.scss (global styles)
-@use '@angular/material' as mat;
+@use "@angular/material" as mat;
 
 // Include material core styles
 @include mat.core();
-
 
 // Global styles
 html, body {
@@ -17,5 +16,3 @@ html, body {
   background: #f44336;
   color: white;
 }
-
-

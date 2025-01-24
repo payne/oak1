@@ -18,4 +18,3 @@ f.seekSync(6, Deno.SeekMode.Start);
 const buf = new Uint8Array(5);
 f.readSync(buf);
 f.close();
-

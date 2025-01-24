@@ -5,7 +5,9 @@ import { decompress } from "https://deno.land/x/zip@v1.2.5/mod.ts";
 
 if (Deno.args.length !== 1) {
   console.error("Please provide a URL to the ZIP file");
-  console.error("Usage: deno run --allow-net --allow-write --allow-read u3.ts <url>");
+  console.error(
+    "Usage: deno run --allow-net --allow-write --allow-read u3.ts <url>",
+  );
   Deno.exit(1);
 }
 
@@ -21,27 +23,28 @@ try {
   console.log(`Downloading ZIP from ${url}...`);
   const response = await fetch(url);
   if (!response.ok) {
-    throw new Error(`Failed to download: ${response.status} ${response.statusText}`);
+    throw new Error(
+      `Failed to download: ${response.status} ${response.statusText}`,
+    );
   }
 
   // Save the ZIP file temporarily
   const data = new Uint8Array(await response.arrayBuffer());
   await Deno.writeFile(tempFile, data);
-  
+
   // Extract the ZIP contents
   console.log("Extracting ZIP contents...");
   const files = await decompress(tempFile, outputDir);
-  
+
   // Log extracted files
   for (const file of files) {
     console.log(`Extracted: ${file}`);
   }
-  
+
   // Clean up the temporary file
   await Deno.remove(tempFile);
-  
-  console.log(`\nExtraction complete! Files are in ${outputDir}`);
 
+  console.log(`\nExtraction complete! Files are in ${outputDir}`);
 } catch (error) {
   console.error("Error:", error.message);
   // Clean up temp file if it exists
@@ -52,4 +55,3 @@ try {
   }
   Deno.exit(1);
 }
-
