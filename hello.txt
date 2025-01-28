@@ -1,25 +1,9 @@
 
-This is the file hello.txt
+From https://cagesum.com/
 
+If you see my wife again, you tell her I love her... she's my hummingbird. Unless you're a 20 year old guitarist from Seattle. It's a grunge thing. They somehow managed to get every creep and freak in the universe onto this one plane. There are two types of tragedies in life. One is not getting what you want, the other is getting it. What if I just make her a little pair of wings out of paper? 
 
-const bytes = await Deno.readFile("hello.txt");
-const text = await Deno.readTextFile("hello.txt");
-const file = await Deno.open("hello.txt");
-const buffer = new Uint8Array(5);
-const bytesRead = await file.read(buffer);
-console.log(`Read ${bytesRead} bytes`);
-const pos = await file.seek(6, Deno.SeekMode.Start);
-console.log(`Sought to position ${pos}`);
-const buffer2 = new Uint8Array(2);
-const bytesRead2 = await file.read(buffer2);
-console.log(`Read ${bytesRead2} bytes`);
-await file.seek(0, Deno.SeekMode.Start);
-file.close();
-Deno.readFileSync("hello.txt");
-Deno.readTextFileSync("hello.txt");
-const f = Deno.openSync("hello.txt");
-f.seekSync(6, Deno.SeekMode.Start);
-const buf = new Uint8Array(5);
-f.readSync(buf);
-f.close();
+Many hands make light work. My daddy taught me that. What's that like? What's it taste like? Describe it like Hemingway. Yea. Goodspeed, to wish someone a prosperous journey. Why? I love pressure. I eat it for breakfast. Why couldn't you put the bunny back in the box? 
+
+Thank God there are still legal ways to exploit developing countries. I believe it's warlord. The only question is: "How do we arm the other 11?" People don't throw things at me any more. Maybe because I carry a bow around. My first thought would be... a lot.
 

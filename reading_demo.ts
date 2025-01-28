@@ -1,5 +1,8 @@
 const bytes = await Deno.readFile(import.meta.dirname + "/hello.txt");
 const text = await Deno.readTextFile(import.meta.dirname + "/hello.txt");
+console.log(`TEXT IS:`);
+console.log(text);
+console.log(`END OF TEXT`);
 const file = await Deno.open(import.meta.dirname + "/hello.txt");
 const buffer = new Uint8Array(5);
 const bytesRead = await file.read(buffer);
