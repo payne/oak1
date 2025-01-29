@@ -11,7 +11,7 @@ app.use(async (ctx, next) => {
   } catch (err) {
     console.error(err);
     ctx.response.status = 500;
-    ctx.response.body = { message: "Internal server error" };
+    ctx.response.body = { message: "Internal server error - please contact the project architect" };
   }
 });
 
